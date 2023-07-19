@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Corridor.iml" filepath="$PROJECT_DIR$/.idea/modules/Corridor.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Corridor-build.iml" filepath="$PROJECT_DIR$/.idea/modules/Corridor-build.iml" />
+    </modules>
+  </component>
+</project>
