@@ -1,13 +1,20 @@
 import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
+import scala.compiletime.ops.boolean.&&
 
 class Board(size:Int) {
   private val whole_size = size*2-1
-  var black: Pawn = new Pawn(0,whole_size/2,Color.Black)
-  var white: Pawn = new Pawn(whole_size-1,whole_size/2,Color.White)
-  private var round_color = Color.White
-  private val pawns=Seq(black,white)
+  private val black: Player = new Player(0, whole_size / 2, Color.Black)
+  private val white: Player = new Player(whole_size - 1, whole_size / 2, Color.White)
+  private val blue: Player = new Player(whole_size / 2, 0, Color.Blue)
+  private val red: Player = new Player(whole_size / 2, whole_size - 1, Color.Red)
+  var round_color: Color = Color.Black
+  val players: Seq[Player] =Seq(black,white,red,blue)
   var walls: mutable.HashSet[(Int,Int)] = new mutable.HashSet[(Int, Int)]()
+
+  def change_round(): Unit = {
+    round_color = Color.fromOrdinal((round_color.value + 1) % 4)
+  }
 
   def put_wall(pos: (Int, Int), direction: Direction): Unit = walls.addAll(wall_path(pos, direction))
 
@@ -26,11 +33,14 @@ class Board(size:Int) {
     if((pos._1%2==0 && direction.horizontal) || (pos._2%2==0 && !direction.horizontal)){
       return false
     }
-    wall_path(pos, direction).map((x:(Int,Int)) => walls.contains(x)).reduceLeft((x: Boolean,y: Boolean) => x||y)
+    if(can_go_to_end_if_added(pos, direction)){
+      return wall_path(pos, direction).map((x:(Int,Int)) => walls.contains(x)).reduceLeft((x: Boolean,y: Boolean) => x||y)
+    }
+    false
   }
 
 
-  def available(position: (Int,Int),color: Color): ArrayBuffer[(Int, Int)] = {
+  def available(position: (Int,Int)): ArrayBuffer[(Int, Int)] = {
     val result = new ArrayBuffer[(Int, Int)]()
     for (move <- Direction.values) {
       val vector: (Int, Int) = move.to_vec
@@ -39,14 +49,15 @@ class Board(size:Int) {
       if (new_row > -1 && new_row < whole_size && new_col > -1 && new_col < whole_size) {
         val mid_row = position._1 + vector._1
         val mid_col = position._2 + vector._2
-        if(!walls.contains((mid_row,mid_col))&&pawns(1-color.value).position!=(new_row,new_col))
+        val is_not_other_pawn = Color.values.map((x:Color) => players(x.value).position != (new_row,new_col)).reduceLeft((x:Boolean,y: Boolean) => x&&y)
+        if(!walls.contains((mid_row,mid_col))&&is_not_other_pawn)
           result.addOne((new_row, new_col))
       }
     }
     result
   }
 
-  def available(position: (Int, Int), color: Color, added: mutable.ArrayBuffer[(Int,Int)]): ArrayBuffer[(Int, Int)] = {
+  def available(position: (Int, Int), added: mutable.ArrayBuffer[(Int,Int)]): ArrayBuffer[(Int, Int)] = {
     val result = new ArrayBuffer[(Int, Int)]()
     for (move <- Direction.values) {
       val vector: (Int, Int) = move.to_vec
@@ -55,48 +66,52 @@ class Board(size:Int) {
       if (new_row > -1 && new_row < whole_size && new_col > -1 && new_col < whole_size) {
         val mid_row = position._1 + vector._1
         val mid_col = position._2 + vector._2
-        if (!walls.contains((mid_row, mid_col)) && !added.contains((mid_row, mid_col)) && pawns(1 - color.value).position != (new_row, new_col))
+        val is_not_other_pawn = Color.values.map((x:Color) => players(x.value).position != (new_row,new_col)).reduceLeft((x:Boolean,y: Boolean) => x&&y)
+        if (!walls.contains((mid_row, mid_col)) && !added.contains((mid_row, mid_col)) && is_not_other_pawn)
           result.addOne((new_row, new_col))
       }
     }
     result
+  }
+  def has_won(position: (Int, Int), color: Color): Boolean = {
+    color match{
+      case Color.Black => position._1 == whole_size - 1
+      case Color.White => position._1 == 0
+      case Color.Blue => position._2 == whole_size - 1
+      case Color.Red => position._2 == 0
+    }
   }
   def can_go_to_end(position: (Int, Int), color: Color, visited: mutable.HashSet[(Int,Int)]): Boolean = {
-    if((color==Color.Black && position._1==whole_size-1) || (color==Color.White && position._1==0)){
+    if(has_won(position,color)){
       return true
     }
     visited.addOne(position)
-    val moves = available(position,color).filter((x:(Int,Int)) => !visited.contains(x))
+    val moves = available(position).filter((x:(Int,Int)) => !visited.contains(x))
     if(moves.isEmpty)
       return false
     moves.map((move:(Int,Int))=>can_go_to_end(move,color,visited)).reduceLeft((x:Boolean,y:Boolean) => x||y)
   }
 
-  def can_go_to_end(position: (Int, Int), color: Color, visited: mutable.HashSet[(Int, Int)], added: mutable.ArrayBuffer[(Int, Int)]): Boolean = {
-    if ((color == Color.Black && position._1 == whole_size - 1) || (color == Color.White && position._1 == 0)) {
+  def can_go_to_end_if_added(position: (Int, Int), color: Color, visited: mutable.HashSet[(Int, Int)], added: mutable.ArrayBuffer[(Int, Int)]): Boolean = {
+    if (has_won(position,color)) {
       return true
     }
     visited.addOne(position)
-    val moves = available(position, color, added).filter((x: (Int, Int)) => !visited.contains(x))
+    val moves = available(position, added).filter((x: (Int, Int)) => !visited.contains(x))
     if (moves.isEmpty)
       return false
-    moves.map((move: (Int, Int)) => can_go_to_end(move, color, visited, added)).reduceLeft((x: Boolean, y: Boolean) => x || y)
+    moves.map((move: (Int, Int)) => can_go_to_end_if_added(move, color, visited, added)).reduceLeft((x: Boolean, y: Boolean) => x || y)
   }
 
   def can_go_to_end(color: Color): Boolean = {
-    val pawn = pawns(color.value)
+    val pawn = players(color.value)
     val visited = new mutable.HashSet[(Int,Int)]()
     can_go_to_end(pawn.position,color,visited)
   }
 
-  def can_go_to_end_if_added(pos:(Int,Int),direction: Direction): Boolean = {
+  private def can_go_to_end_if_added(pos:(Int,Int), direction: Direction): Boolean = {
     val w_path = wall_path(pos,direction)
-    var visited = new mutable.HashSet[(Int, Int)]()
-    if(!can_go_to_end(white.position, Color.White, visited,w_path)){
-      return false
-    }
-    visited = new mutable.HashSet[(Int, Int)]()
-    can_go_to_end(black.position, Color.Black, visited,w_path)
+    players.map((x:Player) => can_go_to_end_if_added(x.position,x.color,new mutable.HashSet[(Int, Int)](),w_path)).reduceLeft((y: Boolean, z: Boolean) => y&&z)
   }
   def show(): Unit = {
     //os.system('cls')
