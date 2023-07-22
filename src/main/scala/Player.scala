@@ -2,7 +2,7 @@ import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.control.Label
 import scalafx.scene.effect.BlendMode.Blue
 import scalafx.scene.layout.{Background, HBox, VBox}
-import scalafx.scene.paint.Color.{LightGreen, Purple, White}
+import scalafx.scene.paint.Color.{Green, LightGreen, Purple, White}
 import scalafx.scene.text.Font
 
 import scala.collection.mutable.ArrayBuffer
@@ -17,7 +17,7 @@ class Player(var row: Int, var col: Int, var color:Color) {
     val palette = color.get_paint()
     var textColor = palette._2
     if(round_color==this.color) {
-      textColor = LightGreen
+      textColor = Green
     }
     val nameLabel: Label = new Label("Player "+color.toString)
     val wallLabel: Label = new Label("available walls: "+walls_available)

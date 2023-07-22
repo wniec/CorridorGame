@@ -6,7 +6,8 @@ import scalafx.application.JFXApp3
 import scalafx.scene.{Node, Scene}
 import scalafx.scene.paint.Color.*
 import scalafx.geometry.{Insets, Pos}
-import scalafx.scene.layout.{Background, HBox, VBox}
+import scalafx.scene.layout.{Background, BackgroundFill, BackgroundImage, BackgroundPosition, BackgroundRepeat, BackgroundSize, HBox, VBox}
+import scalafx.scene.paint.LinearGradient
 import scalafx.scene.shape.Rectangle
 import scalafx.stage.Stage
 
@@ -16,28 +17,28 @@ import scala.collection.mutable.ArrayBuffer
 object App extends JFXApp3 {
   private val board: Board = new Board(9)
   private var state: AppState = AppState.Default
-  private var wall_chosen: Option[(Int,Int)] = None
+  private var selected_wall: Option[(Int,Int)] = None
   private var areas_available: ArrayBuffer[(Int,Int)] = new ArrayBuffer[(Int, Int)]()
   private var round = 0
 
+  private val tile_color = DarkBlue
+  private val highlighted_tile_color = DarkGreen
+  private val wall_color = Black
+  private val available_wall_color = Orange
+  private val selected_wall_color = Red
+  private val no_wall_color = LightBlue
   private def square(xr: Int, yr: Int): HBox ={
     val positions = board.players.map((p: Player) => p.position)
-    val highlighted_area: Boolean = ((xr,yr)==board.players(board.round_color.value).position && state==AppState.Moving)||areas_available.contains((xr,yr))
+    val highlighted_area: Boolean = ((xr,yr)==board.players(board.round_color.ordinal).position && state==AppState.Moving)||areas_available.contains((xr,yr))
     if(xr % 2 == 0 && yr % 2 == 0 && positions.contains((xr,yr))){
       val color = Color.values(positions.indexOf((xr, yr)))
       pawn_view(color,highlighted_area)
     }
     else{
-      field_view(xr,yr,highlighted_area)
+      tile_view(xr,yr,highlighted_area)
     }
-    //view.setFitWidth((w_width - 80) / 17)
-    //view.setFitHeight((w_height - 100) / 17)
-      /*view.onMouseClicked = (_: MouseEvent) => {
-        update()
-      }*/
-
   }
-  private def add_mouse_event(node: Node, new_state: AppState, position:(Int,Int)): Unit ={
+  private def tile_mouse_event(node: Node, new_state: AppState, position:(Int,Int)): Unit ={
     val can_go_to = areas_available.contains(position)
     (state,new_state, can_go_to) match{
       case (AppState.Default,AppState.Moving, _) => node.onMouseClicked = (_: MouseEvent) => {
@@ -48,12 +49,16 @@ object App extends JFXApp3 {
       case (AppState.Moving, AppState.Default, true) => node.onMouseClicked = (_: MouseEvent) => {
         state = new_state
         areas_available.clear()
-        board.players(board.round_color.value).move(position._1, position._2)
-        println(board.players(board.round_color.value).position)
+        board.players(board.round_color.ordinal).move(position._1, position._2)
         board.change_round()
         update()
       }
       case (AppState.Moving,AppState.Default, false) => node.onMouseClicked = (_: MouseEvent) => {
+        state = new_state
+        areas_available.clear()
+        update()
+      }
+      case (AppState.PuttingWall, AppState.Default, _) => node.onMouseClicked = (_: MouseEvent) => {
         state = new_state
         areas_available.clear()
         update()
@@ -65,63 +70,106 @@ object App extends JFXApp3 {
       }
     }
   }
+
+  private def wall_mouse_event(node: Node, new_state: AppState, position: (Int, Int), can_put_wall: Boolean): Unit = {
+    (state, new_state, can_put_wall) match {
+      case (AppState.Moving, AppState.Default, _) => node.onMouseClicked = (_: MouseEvent) => {
+        state = new_state
+        areas_available.clear()
+        update()
+      }
+      case (AppState.Default, AppState.PuttingWall, _) => node.onMouseClicked = (_: MouseEvent) => {
+        state = new_state
+        areas_available.clear()
+        selected_wall = Some(position)
+        update()
+      }
+      case (AppState.PuttingWall, AppState.Default, false) => node.onMouseClicked = (_: MouseEvent) => {
+        state = new_state
+        areas_available.clear()
+        update()
+      }
+      case (AppState.PuttingWall, AppState.Default, true) => node.onMouseClicked = (_: MouseEvent) => {
+        state = new_state
+        areas_available.clear()
+        board.put_wall(selected_wall.get, board.coords_to_dir(selected_wall.get, position))
+        selected_wall = None
+        board.players(board.round_color.ordinal).walls_available -= 1
+        board.change_round()
+        update()
+      }
+      case _ => node.onMouseClicked = (_: MouseEvent) => {
+        state = new_state
+        areas_available = board.available(position)
+        update()
+      }
+    }
+  }
   private def pawn_view(color:Color,highlighted: Boolean) = new HBox{
     val img: Image = color.get_image()
     val view = new ImageView(img)
-    val position: (Int, Int) = board.players(color.value).position
+    val position: (Int, Int) = board.players(color.ordinal).position
     view.fitWidth = 60
     view.fitHeight = 60
     if(highlighted)
-      background = Background.fill(DarkGreen)
+      background = Background.fill(highlighted_tile_color)
     else
-      background = Background.fill(DarkBlue)
+      background = Background.fill(tile_color)
     if(state == AppState.Moving){
-        add_mouse_event(view,AppState.Default,position)
+        tile_mouse_event(view,AppState.Default,position)
     }
     else if(state == AppState.Default){
       if(color== board.round_color)
-        add_mouse_event(view,AppState.Moving,position)
+        tile_mouse_event(view,AppState.Moving,position)
     }
     else if (state == AppState.PuttingWall) {
       if (color == board.round_color)
-        add_mouse_event(view, AppState.Default, position)
+        tile_mouse_event(view, AppState.Default, position)
     }
     children = Seq(view)
   }
 
-  private def field_view(xr:Int, yr: Int,highlighted: Boolean) = new HBox{
+  private def tile_view(xr:Int, yr: Int,highlighted: Boolean) = new HBox{
     val s: (Int, Int) = rec_size(xr % 2 == 0, yr % 2 == 0)
     val rec: Rectangle =new Rectangle {
       width = s._1
       height = s._2
-      if (highlighted)
-        fill = DarkGreen
-      else
-        fill = DarkBlue
     }
       if(s==(60,60)){
-        if(state == AppState.Moving) {
-          add_mouse_event(rec,AppState.Default,(xr,yr))
-        }
-        else{
-          add_mouse_event(rec,AppState.Default,(xr,yr))
-        }
+        tile_mouse_event(rec,AppState.Default,(xr,yr))
+        if (highlighted)
+          rec.fill = highlighted_tile_color
+        else
+          rec.fill = tile_color
       }
       else{
-        if (board.walls.contains((xr, yr))) {
-          rec.fill = Black
-        }
-        else {
-          rec.fill = LightBlue
-        }
-        if(s._1!=s._2){
-
-        }
-        else{
-
-        }
+        wall_view(xr,yr,rec)
       }
     children = Seq(rec)
+  }
+
+  private def wall_view(xr: Int, yr: Int, rec:Rectangle): Unit={
+      if (board.walls.contains((xr, yr)))
+        rec.fill = wall_color
+      else if(state==AppState.PuttingWall){
+        if ((xr, yr) == selected_wall.get) {
+          rec.fill = selected_wall_color
+          wall_mouse_event(rec, AppState.Default, (xr, yr),false)
+        }
+        else if (board.can_put_wall(selected_wall.get, (xr, yr))) {
+          rec.fill = available_wall_color
+          wall_mouse_event(rec, AppState.Default, (xr, yr),true)
+        }
+        else
+          rec.fill = no_wall_color
+      }
+      else{
+        rec.fill = no_wall_color
+        if(state==AppState.Moving)
+          wall_mouse_event(rec, AppState.Default, (xr, yr),false)
+        else if (state == AppState.Default && board.players(board.round_color.ordinal).walls_available > 0)
+          wall_mouse_event(rec, AppState.PuttingWall, (xr, yr),false)
+      }
   }
   private def rec_size(a:Boolean, b:Boolean)= {
     (a, b) match {
@@ -132,35 +180,49 @@ object App extends JFXApp3 {
     }
   }
 
-
-
   private def players_info() = new HBox {
     minWidth = 60
     maxWidth = 620
     prefHeight = 154
     children = board.players.map((x:Player) => x.info_box(board.round_color))
-    background = Background.fill(Purple)
     alignment = Pos.Center
   }
 
   private def vbox(xr: Int): VBox = new VBox {
     children = (0 to 16).map((yr: Int) => square(xr,yr))
   }
+  def side_rec(color: Color): Rectangle = {
+    var size:(Int,Int)=(0,0)
+    color match {
+      case Color.Black | Color.White => size = (620, 40)
+      case Color.Blue | Color.Red => size = (40, 620)
+    }
+    new Rectangle{
+      fill = color.get_paint()._1
+      height = size._1
+      width = size._2
+    }
+  }
+  private def make_board()= {
+    val hbox = new HBox{
+      children = List(side_rec(Color.White)).++((0 to 16).map((x: Int) => vbox(x))).++(List(side_rec(Color.Black)))
+      alignment = Pos.Center
+    }
+    new VBox{
+      children = side_rec(Color.Red) :: hbox :: side_rec(Color.Blue) :: Nil
+      alignment = Pos.Center
+      padding = Insets(10,10,10,10)
+    }
 
-  private def make_HBox_seq()= new HBox{
-    children = (0 to 16).map((x: Int) => vbox(x))
-    alignment = Pos.Center
-    padding = Insets(10,10,10,10)
   }
 
   private def update(): Unit = {
     stage.getScene.setRoot(
     new VBox {
-      padding = Insets(10, 10, 10, 10)
+      background = Background.fill(Purple)
       alignment = Pos.Center
-      children = Seq(make_HBox_seq(), players_info())
-    }
-    )
+      children = Seq(make_board(), players_info())
+    })
   }
   private def check(): Boolean = {
     round +=1
@@ -171,9 +233,6 @@ object App extends JFXApp3 {
   }
 
   override def start(): Unit = {
-    //board.put_wall((7,8),Direction.Right)
-    //println(board.walls)
-    //println(board.walls.contains((7,8)))
     stage = new JFXApp3.PrimaryStage {
       title.value = "The Corridor Game"
       fullScreen = true
@@ -181,12 +240,10 @@ object App extends JFXApp3 {
         resizable = true
         minWidth = 1280
         minHeight = 960
-        fill = LightGrey
         root = new VBox{
-          padding= Insets(10,10,10,10)
-          fill = Red
+          background = Background.fill(Purple)
           alignment = Pos.Center
-          children = Seq(make_HBox_seq(),players_info())
+          children = Seq(make_board(),players_info())
         }
       }
     }

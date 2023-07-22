@@ -1,14 +1,6 @@
 import scalafx.scene.image.Image
 enum Color:
-  case Black, White, Red, Blue
-  def value:Int={
-    this match {
-      case Black => 0
-      case White => 1
-      case Red => 2
-      case Blue => 3
-    }
-  }
+  case Black, Blue, White, Red
   def get_image(): Image = {
     this match {
       case Black => new Image("file:src/main/resources/black.png")
