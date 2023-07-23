@@ -14,17 +14,17 @@ class Player(var row: Int, var col: Int, var color:Color) {
     this.col = col
   }
   def info_box(round_color: Color): VBox = {
-    val palette = color.get_paint()
-    var textColor = palette._2
+    val palette = color.get_palette
+    var text_color = palette._2
     if(round_color==this.color) {
-      textColor = Green
+      text_color = Green
     }
-    val nameLabel: Label = new Label("Player "+color.toString)
-    val wallLabel: Label = new Label("available walls: "+walls_available)
-    nameLabel.setTextFill(textColor)
-    wallLabel.setTextFill(textColor)
-    nameLabel.setFont(Font.font("Arial",20.0))
-    wallLabel.setFont(Font.font("Arial",15.0))
+    val nameLabel: Label = new Label("PLAYER "+color.toString.toUpperCase())
+    val wallLabel: Label = new Label("AVAILABLE WALLS: "+walls_available)
+    nameLabel.setTextFill(text_color)
+    wallLabel.setTextFill(text_color)
+    nameLabel.setFont(Font.font("Impact",20.0))
+    wallLabel.setFont(Font.font("Impact",15.0))
     val vbox = new VBox {
       alignment = Pos.Center
       children = Seq(nameLabel,wallLabel)

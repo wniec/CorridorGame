@@ -1,6 +1,5 @@
 import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
-import scala.compiletime.ops.boolean.&&
 
 class Board(size:Int) {
   private val whole_size = size*2-1
@@ -57,7 +56,17 @@ class Board(size:Int) {
       return wall_path(pos1, direction).map((x: (Int, Int)) => !walls.contains(x)).reduceLeft((x: Boolean, y: Boolean) => x && y)
     false
   }
-
+  private def in_boundaries(position:(Int,Int)) ={position._1 > -1 && position._1 < whole_size && position._2 > -1 && position._2 < whole_size}
+  private def can_go_to(current:(Int,Int),next:(Int,Int)):Boolean={
+    if(in_boundaries(next)){
+      val mid_row = (current._1 + next._1)/2
+      val mid_col = (current._2 + next._2)/2
+      if(walls.contains((mid_row,mid_col)))
+        return false
+      return true
+    }
+    false
+  }
 
   def available(position: (Int,Int)): ArrayBuffer[(Int, Int)] = {
     val result = new ArrayBuffer[(Int, Int)]()
@@ -65,14 +74,20 @@ class Board(size:Int) {
       return result
     for (move <- Direction.values) {
       val vector: (Int, Int) = move.to_vec
-      val new_row = position._1 + vector._1 * 2
-      val new_col = position._2 + vector._2 * 2
-      if (new_row > -1 && new_row < whole_size && new_col > -1 && new_col < whole_size) {
-        val mid_row = position._1 + vector._1
-        val mid_col = position._2 + vector._2
-        val is_not_other_pawn = Color.values.map((x:Color) => players(x.ordinal).position != (new_row,new_col)).reduceLeft((x:Boolean,y: Boolean) => x&&y)
-        if(!walls.contains((mid_row,mid_col))&&is_not_other_pawn)
+      val new_row:Int = position._1 + vector._1 * 2
+      val new_col:Int = position._2 + vector._2 * 2
+      val is_not_other_pawn = Color.values.map((x:Color) => players(x.ordinal).position != (new_row,new_col)).reduceLeft((x:Boolean,y: Boolean) => x&&y)
+      if(can_go_to(position,(new_row,new_col))){
+        if(is_not_other_pawn){
           result.addOne((new_row, new_col))
+        }
+        else{
+          val row_after = position._1 + vector._1 * 4
+          val col_after = position._2 + vector._2 * 4
+          if(can_go_to((new_row,new_col),(row_after,col_after))){
+            result.addOne((row_after,col_after))
+          }
+        }
       }
     }
     result
@@ -93,13 +108,23 @@ class Board(size:Int) {
     }
     result
   }
-  def has_won(position: (Int, Int), color: Color): Boolean = {
+  private def has_won(position: (Int, Int), color: Color): Boolean = {
     color match{
       case Color.Black => position._1 == whole_size - 1
       case Color.White => position._1 == 0
       case Color.Blue => position._2 == whole_size - 1
       case Color.Red => position._2 == 0
     }
+  }
+
+  def who_won: Option[Color] = {
+    var winner: Option[Color] = None
+    players.foreach((p: Player) => {
+      if(has_won(p.position,p.color)){
+        winner = Some(p.color)
+      }
+    })
+    winner
   }
 
   private def can_go_to_end_if_added(position: (Int, Int), color: Color, visited: mutable.HashSet[(Int, Int)], added: mutable.ArrayBuffer[(Int, Int)]): Boolean = {

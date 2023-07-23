@@ -1,0 +1,49 @@
+.button{
+    -fx-background-radius: 25px;
+    -fx-border-radius: 25px;
+    -fx-border-style:  solid;
+    -fx-pref-width: 500px;
+    -fx-pref-height: 200px;
+    -fx-background-color: #c3c3c3 ;
+    -fx-border-color: #7f7f7f ;
+    -fx-border-width: 5 ;
+    -fx-font-family: "Impact";
+    -fx-font-size: 48;
+    -fx-letter-spacing: 10px;
+    -fx-text-alignment: center;
+    -fx-text-fill: #7f7f7f;
+    -fx-padding: 10px;
+}
+.button-box{
+    -fx-background-color: rgba(0,0,0,0.0) ;
+    -fx-spacing: 20;
+    -fx-alignment: center;
+}
+.background{
+    -fx-background-color: rgba(0,90,45,1.0) ;
+    -fx-alignment: center;
+}
+.highlighted-tile{
+    -fx-fill: rgba(60,140,100,1.0) ;
+    -fx-background-color: rgba(60,140,100,1.0) ;
+}
+.tile{
+    -fx-fill: rgba(30,90,60,1.0) ;
+    -fx-background-color: rgba(30,90,60,1.0) ;
+}
+.wall{
+    -fx-fill: rgba(10,10,20,0.6);
+    -fx-background-color: rgba(10,10,20,0.6) ;
+    }
+.available-wall{
+    -fx-fill: rgba(20,40,90,0.6);
+    -fx-background-color: rgba(20,40,90,0.6) ;
+    }
+.selected-wall{
+    -fx-fill: rgba(20,50,30,0.6);
+    -fx-background-color: rgba(20,50,30,0.6) ;
+    }
+.no-wall{
+    -fx-fill: rgba(180,240,180,0.6);
+    -fx-background-color: rgba(180,240,180,0.6) ;
+    }

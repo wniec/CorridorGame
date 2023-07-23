@@ -4,18 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d4f70916-e58d-4c8c-a45b-48674fe0529a" name="Changes" comment="Basic GUI implemented">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/background.png" afterDir="false" />
+    <list default="true" id="d4f70916-e58d-4c8c-a45b-48674fe0529a" name="Changes" comment="walls building implemented">
+      <change afterPath="$PROJECT_DIR$/src/main/scala/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/scala_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/scala_settings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/black.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/black.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/blue.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/blue.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/red.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/red.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/white.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/white.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/black.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/blue.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/red.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/white.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/scala/App.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/App.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/scala/Board.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/Board.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/scala/Color.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/Color.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/Game.scala" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/Main.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/Main.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/scala/Player.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/Player.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/scala/TerminalApp.scala" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,19 +49,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;scala_project_settings_configurable.last_selected_tab_index&quot;: &quot;6&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;org.jetbrains.plugins.scala.settings.ScalaProjectSettingsConfigurable&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.2",
+    "scala_project_settings_configurable.last_selected_tab_index": "6",
+    "settings.editor.selected.configurable": "preferences.pluginManager"
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected="Application.Main">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
@@ -83,6 +85,20 @@
     </recent_temporary>
   </component>
   <component name="ScalaProjectSettings">
+    <option name="intInjectionMapping">
+      <map>
+        <entry key="html" value="HTML" />
+        <entry key="java" value="JAVA" />
+        <entry key="json" value="JSON" />
+        <entry key="json5" value="JSON5" />
+        <entry key="scala" value="Scala" />
+        <entry key="svg" value="SVG" />
+        <entry key="xhtml" value="XHTML" />
+        <entry key="xml" value="XML" />
+        <entry key="xpath" value="XPath" />
+        <entry key="yaml" value="yaml" />
+      </map>
+    </option>
     <option name="scala3DisclaimerShown" value="true" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -101,7 +117,14 @@
       <option name="project" value="LOCAL" />
       <updated>1689959922876</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="walls building implemented">
+      <created>1690031632430</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1690031632430</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -118,7 +141,8 @@
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="Basic GUI implemented" />
-    <option name="LAST_COMMIT_MESSAGE" value="Basic GUI implemented" />
+    <MESSAGE value="walls building implemented" />
+    <option name="LAST_COMMIT_MESSAGE" value="walls building implemented" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
