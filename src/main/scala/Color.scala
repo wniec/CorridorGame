@@ -12,7 +12,7 @@ enum Color:
     }
   }
 
-  def get_paint: scalafx.scene.paint.Color = {
+  private def get_paint: scalafx.scene.paint.Color = {
     this match {
       case Black => scalafx.scene.paint.Color.Black
       case White => scalafx.scene.paint.Color.White
