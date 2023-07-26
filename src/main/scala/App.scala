@@ -162,7 +162,7 @@ object App extends JFXApp3 {
         rec.styleClass = List("no-wall")
         if(state==AppState.Moving)
           wall_mouse_event(rec, AppState.Default, (xr, yr),false)
-        else if (state == AppState.Default && board.players(board.round_color.ordinal).walls_available > 0)
+        else if (state == AppState.Default && board.players(board.round_color.ordinal).walls_available > 0 && (xr%2==0||yr%2==0))
           wall_mouse_event(rec, AppState.PuttingWall, (xr, yr),false)
       }
   }

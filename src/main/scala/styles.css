@@ -20,7 +20,7 @@
     -fx-alignment: center;
 }
 .background{
-    -fx-background-color: rgba(0,90,45,1.0) ;
+    -fx-background-color: rgba(0,90,60,1.0) ;
     -fx-alignment: center;
 }
 .highlighted-tile{
@@ -28,8 +28,8 @@
     -fx-background-color: rgba(60,140,100,1.0) ;
 }
 .tile{
-    -fx-fill: rgba(30,90,60,1.0) ;
-    -fx-background-color: rgba(30,90,60,1.0) ;
+    -fx-fill: rgba(0,90,60,1.0) ;
+    -fx-background-color: rgba(0,90,60,1.0) ;
 }
 .wall{
     -fx-fill: rgba(10,10,20,0.6);

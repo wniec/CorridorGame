@@ -4,16 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d4f70916-e58d-4c8c-a45b-48674fe0529a" name="Changes" comment="completed game GUI and logic">
-      <change afterPath="$PROJECT_DIR$/project/plugins.sbt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project/project/project/target/config-classes/$764ff503dec5c1cc467a$.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project/project/project/target/config-classes/$764ff503dec5c1cc467a.cache" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project/project/project/target/config-classes/$764ff503dec5c1cc467a.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/Corridor-build.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/Corridor-build.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sbt.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sbt.xml" afterDir="false" />
+    <list default="true" id="d4f70916-e58d-4c8c-a45b-48674fe0529a" name="Changes" comment="configured .sbt files">
+      <change beforePath="$PROJECT_DIR$/.bsp/sbt.json" beforeDir="false" afterPath="$PROJECT_DIR$/.bsp/sbt.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/Corridor.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/Corridor.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.sbt" beforeDir="false" afterPath="$PROJECT_DIR$/build.sbt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/scala/Color.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/Color.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/App.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/App.scala" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -141,7 +137,14 @@
       <option name="project" value="LOCAL" />
       <updated>1690143338320</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="configured .sbt files">
+      <created>1690197520590</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1690197520590</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -160,7 +163,8 @@
     <MESSAGE value="Basic GUI implemented" />
     <MESSAGE value="walls building implemented" />
     <MESSAGE value="completed game GUI and logic" />
-    <option name="LAST_COMMIT_MESSAGE" value="completed game GUI and logic" />
+    <MESSAGE value="configured .sbt files" />
+    <option name="LAST_COMMIT_MESSAGE" value="configured .sbt files" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
