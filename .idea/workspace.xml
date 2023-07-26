@@ -4,12 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d4f70916-e58d-4c8c-a45b-48674fe0529a" name="Changes" comment="configured .sbt files">
-      <change beforePath="$PROJECT_DIR$/.bsp/sbt.json" beforeDir="false" afterPath="$PROJECT_DIR$/.bsp/sbt.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/Corridor.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/Corridor.iml" afterDir="false" />
+    <list default="true" id="d4f70916-e58d-4c8c-a45b-48674fe0529a" name="Changes" comment="small tiles no longer selectable">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.sbt" beforeDir="false" afterPath="$PROJECT_DIR$/build.sbt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/scala/App.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/App.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/Board.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/Board.scala" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -144,7 +142,14 @@
       <option name="project" value="LOCAL" />
       <updated>1690197520590</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="small tiles no longer selectable">
+      <created>1690399185532</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1690399185532</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -164,7 +169,8 @@
     <MESSAGE value="walls building implemented" />
     <MESSAGE value="completed game GUI and logic" />
     <MESSAGE value="configured .sbt files" />
-    <option name="LAST_COMMIT_MESSAGE" value="configured .sbt files" />
+    <MESSAGE value="small tiles no longer selectable" />
+    <option name="LAST_COMMIT_MESSAGE" value="small tiles no longer selectable" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

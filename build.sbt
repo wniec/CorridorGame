@@ -12,4 +12,4 @@ assembly / assemblyMergeStrategy := {
   case x => MergeStrategy.first
 }
 assembly / mainClass := Some("Main")
-assembly / assemblyJarName := "corridor-1.1.jar"
+assembly / assemblyJarName := "corridor-1.2.jar"

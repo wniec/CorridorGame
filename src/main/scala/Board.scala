@@ -76,8 +76,8 @@ class Board(size:Int) {
       val vector: (Int, Int) = move.to_vec
       val new_row:Int = position._1 + vector._1 * 2
       val new_col:Int = position._2 + vector._2 * 2
-      val is_not_other_pawn = Color.values.map((x:Color) => players(x.ordinal).position != (new_row,new_col)).reduceLeft((x:Boolean,y: Boolean) => x&&y)
       if(can_go_to(position,(new_row,new_col))){
+        val is_not_other_pawn = Color.values.map((x:Color) => players(x.ordinal).position != (new_row,new_col)).reduceLeft((x:Boolean,y: Boolean) => x&&y)
         if(is_not_other_pawn){
           result.addOne((new_row, new_col))
         }
@@ -85,7 +85,10 @@ class Board(size:Int) {
           val row_after = position._1 + vector._1 * 4
           val col_after = position._2 + vector._2 * 4
           if(can_go_to((new_row,new_col),(row_after,col_after))){
-            result.addOne((row_after,col_after))
+            val is_not_other_pawn2 = Color.values.map((x:Color) => players(x.ordinal).position != (row_after,col_after)).reduceLeft((x:Boolean,y: Boolean) => x&&y)
+            if (is_not_other_pawn2) {
+              result.addOne((row_after, col_after))
+            }
           }
         }
       }
